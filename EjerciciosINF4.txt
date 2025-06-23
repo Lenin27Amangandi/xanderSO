@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <pthread.h>
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+int turno = 1;
+
+void* hilo_func(void* arg) {
+    int mi_turno = *(int*)arg;
+
+    pthread_mutex_lock(&mutex);
+    while (turno != mi_turno) {
+        pthread_cond_wait(&cond, &mutex);
+    }
+
+    // Imprimir mensaje según el número de hilo
+    switch (mi_turno) {
+        case 1: printf("Hola desde el hilo 1\n"); break;
+        case 2: printf("Saludos desde el hilo 2\n"); break;
+        case 3: printf("Mensaje desde el hilo 3\n"); break;
+        case 4: printf("Aquí el hilo 4, todo bien!\n"); break;
+    }
+
+    turno++; // Habilita el turno del siguiente hilo
+    pthread_cond_broadcast(&cond); // Despierta a los hilos esperando
+    pthread_mutex_unlock(&mutex);
+
+    return NULL;
+}
+
+int main() {
+    pthread_t hilos[4];
+    int ids[4] = {1, 2, 3, 4};
+
+    for (int i = 0; i < 4; i++) {
+        pthread_create(&hilos[i], NULL, hilo_func, &ids[i]);
+    }
+
+    for (int i = 0; i < 4; i++) {
+        pthread_join(hilos[i], NULL);
+    }
+
+    return 0;
+}
+
+
+Ejercicio 2
+
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+#define NUM_HILOS 5
+
+// Función que hace la suma con un valor interno
+int suma_con_interno(int valor_recibido) {
+    int valor_interno = 10;  // Valor fijo dentro de la función
+    return valor_recibido + valor_interno;
+}
+
+// Función que ejecutará cada hilo
+void* funcion_hilo(void* arg) {
+    int valor = *(int*)arg;
+    int resultado = suma_con_interno(valor);
+    printf("Hilo con valor %d: resultado de la suma = %d\n", valor, resultado);
+    return NULL;
+}
+
+int main() {
+    pthread_t hilos[NUM_HILOS];
+    int valores[NUM_HILOS] = {1, 2, 3, 4, 5};  // Parámetros que se pasarán a los hilos
+
+    for (int i = 0; i < NUM_HILOS; i++) {
+        pthread_create(&hilos[i], NULL, funcion_hilo, &valores[i]);
+    }
+
+    for (int i = 0; i < NUM_HILOS; i++) {
+        pthread_join(hilos[i], NULL);
+    }
+
+    return 0;
+}
