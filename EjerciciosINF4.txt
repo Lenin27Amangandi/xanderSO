@@ -80,3 +80,51 @@ int main() {
 
     return 0;
 }
+
+Version 2 del Ejercicio 2
+
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+#define NUM_HILOS 5
+
+// Estructura para pasar múltiples datos al hilo
+typedef struct {
+    int id_hilo;
+    int valor;
+} DatosHilo;
+
+// Función que hace la suma con un valor interno
+int suma_con_interno(int valor_recibido) {
+    int valor_interno = 10;
+    return valor_recibido + valor_interno;
+}
+
+// Función que ejecutará cada hilo
+void* funcion_hilo(void* arg) {
+    DatosHilo* datos = (DatosHilo*)arg;
+    int resultado = suma_con_interno(datos->valor);
+    printf("Soy el hilo %d con valor %d: resultado de la suma = %d\n",
+           datos->id_hilo, datos->valor, resultado);
+    return NULL;
+}
+
+int main() {
+    pthread_t hilos[NUM_HILOS];
+    DatosHilo datos[NUM_HILOS];
+
+    for (int i = 0; i < NUM_HILOS; i++) {
+        datos[i].id_hilo = i;
+        datos[i].valor = i + 1;  // Valores 1 a 5
+        pthread_create(&hilos[i], NULL, funcion_hilo, &datos[i]);
+    }
+
+    for (int i = 0; i < NUM_HILOS; i++) {
+        pthread_join(hilos[i], NULL);
+    }
+
+    return 0;
+}
+
+
