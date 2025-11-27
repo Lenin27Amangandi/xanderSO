@@ -1,3 +1,56 @@
+## Codigo 16
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int digit_count[10] = {0};  // Contador de cada dígito (0-9)
+int line_count[10] = {0};   // Contador para cada línea (restablecido por línea)
+%}
+
+DIGITO [0-9]
+
+%%
+
+{DIGITO}  {
+    digit_count[yytext[0] - '0']++;  // Incrementar el contador global
+    line_count[yytext[0] - '0']++;   // Incrementar el contador de la línea actual
+}
+
+\n  {
+    // Al final de cada línea, imprimir el conteo de dígitos de esa línea
+    printf("\nConteo de dígitos en la línea:\n");
+    for (int i = 0; i < 10; i++) {
+        if (line_count[i] > 0) {
+            printf("Dígito %d: %d\n", i, line_count[i]);
+        }
+    }
+    // Restablecer el conteo de la línea actual
+    for (int i = 0; i < 10; i++) {
+        line_count[i] = 0;
+    }
+}
+
+.  { /* Ignorar cualquier otro carácter */ }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+
+    // Mostrar la tabla final de conteo de dígitos
+    printf("\nConteo total de dígitos:\n");
+    for (int i = 0; i < 10; i++) {
+        if (digit_count[i] > 0) {
+            printf("Dígito %d: %d\n", i, digit_count[i]);
+        }
+    }
+
+    return 0;
+}
+
+
+
 ## Codigo 20
 
 %{
