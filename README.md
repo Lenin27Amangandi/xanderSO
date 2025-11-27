@@ -1,3 +1,164 @@
+## Codigo 20
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+%}
+
+ID [a-zA-Z_][a-zA-Z0-9_]*
+DIGITO [0-9]+
+COMA ,
+
+%%
+
+{ID}    {
+    printf("Identificador: %s\n", yytext);
+}
+
+{DIGITO} {
+    printf("Número entero: %s\n", yytext);
+}
+
+{COMA}  { /* Ignora la coma */ }
+
+.       {
+    printf("Error: Token no reconocido: %s\n", yytext);
+}
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+---
+
+## Codigo 19
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+%}
+
+HEXA 0[xX][0-9a-fA-F]+
+
+%%
+
+{HEXA} {
+    int decimal = strtol(yytext, NULL, 16);  // Convertir hexadecimal a decimal
+    printf("Número hexadecimal: %s -> Decimal: %d\n", yytext, decimal);
+}
+
+.  { /* Ignorar cualquier otro carácter */ }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+---
+
+## Codigo 18
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+%}
+
+BINARIO [01]+
+
+%%
+
+{BINARIO} {
+    int decimal = strtol(yytext, NULL, 2);  // Convertir binario a decimal
+    printf("Número binario: %s -> Decimal: %d\n", yytext, decimal);
+}
+
+.  { /* Ignorar cualquier otro carácter */ }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+
+---
+
+## Codigo 17
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+%}
+
+EMAIL [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+
+%%
+
+{EMAIL} {
+    printf("Correo electrónico válido: %s\n", yytext);
+}
+
+.  {
+    printf("Carácter no reconocido: %s\n", yytext);
+}
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+---
+
+## Codigo 16
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int digit_count[10] = {0};  // Contador de cada dígito (0-9)
+%}
+
+DIGITO [0-9]
+
+%%
+
+{DIGITO}  {
+    digit_count[yytext[0] - '0']++;  // Incrementar el contador del dígito correspondiente
+}
+
+.  { /* Ignorar cualquier otro carácter */ }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+
+    // Mostrar la tabla de conteo de dígitos
+    printf("Conteo de dígitos:\n");
+    for (int i = 0; i < 10; i++) {
+        printf("Dígito %d: %d\n", i, digit_count[i]);
+    }
+    return 0;
+}
+
+
+---
+
 ## Codigo Cataorse
 
 %{
