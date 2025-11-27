@@ -1,3 +1,66 @@
+## Codigo 11
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAM 128
+
+// Prototipo de funciones
+void encriptar(char frase[TAM], int key);
+void desencriptar(char frase[TAM], int key);
+
+%}
+
+%%
+
+"encriptar"    { printf("Introduce una cadena para encriptar: "); }
+"desencriptar" { printf("Introduce una cadena para desencriptar: "); }
+
+[A-Za-z]+  { 
+    printf("Texto ingresado: %s\n", yytext);
+    encriptar(yytext, 13);
+    desencriptar(yytext, 13);
+}
+
+%%
+
+// Función para encriptar la cadena con ROT13
+void encriptar(char frase[TAM], int key) {
+    int i = 0;
+    while (frase[i] != '\0') {
+        if (frase[i] >= 'A' && frase[i] <= 'Z') {
+            frase[i] = (frase[i] - 'A' + key) % 26 + 'A';
+        } else if (frase[i] >= 'a' && frase[i] <= 'z') {
+            frase[i] = (frase[i] - 'a' + key) % 26 + 'a';
+        }
+        i++;
+    }
+    printf("\nLa frase encriptada es: %s\n", frase);
+}
+
+// Función para desencriptar la cadena con ROT13
+void desencriptar(char frase[TAM], int key) {
+    int i = 0;
+    while (frase[i] != '\0') {
+        if (frase[i] >= 'A' && frase[i] <= 'Z') {
+            frase[i] = (frase[i] - 'A' - key + 26) % 26 + 'A';
+        } else if (frase[i] >= 'a' && frase[i] <= 'z') {
+            frase[i] = (frase[i] - 'a' - key + 26) % 26 + 'a';
+        }
+        i++;
+    }
+    printf("La frase desencriptada es: %s\n", frase);
+}
+
+int main() {
+    yylex();
+    return 0;
+}
+
+
+
 ## Codigo 16
 
 ## Codigo 13
