@@ -1,3 +1,31 @@
+## Codigo 10
+
+%{
+    int num_el = 0, num_ella = 0;
+%}
+
+%%
+
+el      { num_el++; }
+ella    { num_ella++; }
+\n      { /* Saltamos las líneas nuevas */ }
+[ \t]   { /* Ignoramos espacios y tabuladores */ }
+.       { printf("Error: Palabra no válida detectada: %s\n", yytext); } // Captura cualquier entrada no válida
+
+%%
+
+int main()
+{
+    yylex(); // Procesa la entrada
+    printf("Número de 'el' independientes: %d\n", num_el);
+    printf("Número de 'ella' en las frases: %d\n", num_ella);
+    return 0;
+}
+
+## Fin codido 10
+
+
+
 %{
 #include <stdio.h>
 int total = 0;
