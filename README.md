@@ -3,25 +3,37 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <ctype.h>
 
 %}
 
+ID [a-zA-Z_][a-zA-Z0-9_]*
+DIGITO [0-9]+
+COMA ,
+
 %%
 
-// Definición de los tokens
-[a-zA-Z][a-zA-Z0-9]*    { printf("Identificador: %s\n", yytext); }  // Identificadores
-[0-9]+                  { printf("Número entero: %s\n", yytext); }    // Números enteros
-,                       { /* Coma, solo separa los elementos, no hace nada */ }
-.                       { printf("Error: Token no válido '%s'\n", yytext); } // Cualquier otro tipo de token
+{ID}    {
+    printf("Identificador: %s\n", yytext);
+}
+
+{DIGITO} {
+    printf("Número entero: %s\n", yytext);
+}
+
+{COMA}  { /* Ignora la coma */ }
+
+.       {
+    printf("Error: Token no reconocido: %s\n", yytext);
+}
 
 %%
 
 int main() {
-    printf("Introduce una lista de elementos separados por comas (identificadores o números enteros):\n");
-    yylex();  // Ejecuta el analizador léxico
+    yylex();  // Ejecuta el análisis léxico
     return 0;
 }
+
 
 
 
