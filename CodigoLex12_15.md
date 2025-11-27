@@ -1,6 +1,6 @@
 # Ejercicios Lex
 
-## Funciona sin dar el error
+## Sin error 15
 
 %{
 #include <stdio.h>
@@ -27,6 +27,7 @@ int main() {
     yylex();  // Ejecuta el análisis léxico
     return 0;
 }
+
 
 
 ## Talves funcione bien el 15 
