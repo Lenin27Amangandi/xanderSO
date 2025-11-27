@@ -1,5 +1,47 @@
 ## Codigo 16
 
+## Ejercicios 13 Ya echo
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+%}
+
+// Definición de las expresiones regulares
+IDENTIFICADOR [a-zA-Z_][a-zA-Z0-9_]*    // Permite identificadores que comienzan con mayúsculas o minúsculas
+PALABRA_RESERVADA if|else|while|int|char|float|double|long|short|void|for|switch|case|break|continue|goto|namespace|public|private|protected|new|delete|try|catch|throw|virtual|static|friend|template|class|struct|enum|const|volatile|typename|dynamic_cast|reinterpret_cast|static_cast|typeid
+ENTERO [0-9]+
+ERROR .+   // Cualquier otro símbolo que no coincida con los patrones anteriores
+
+%%
+
+// Reglas de análisis léxico
+
+{PALABRA_RESERVADA} { 
+    printf("Token: PALABRA RESERVADA, Lexema: %s\n", yytext); 
+}
+
+{IDENTIFICADOR} { 
+    printf("Token: IDENTIFICADOR, Lexema: %s\n", yytext); 
+}
+
+{ENTERO} { 
+    printf("Token: ENTERO, Lexema: %s\n", yytext); 
+}
+
+{ERROR} {
+    printf("Error: Token no reconocido, Lexema: %s\n", yytext);
+}
+
+%%
+
+int main() {
+    yylex(); // Ejecuta el análisis léxico
+    return 0;
+}
+
+
 ## Ejericico 13
 
 %{
