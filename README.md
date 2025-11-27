@@ -1,3 +1,42 @@
+## Codigo 13
+
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+
+// Definimos un error global
+int error_occurred = 0;
+%}
+
+%%
+
+^A.*    { printf("%s", yytext); }
+.+      { printf(" "); }
+
+%%
+
+int main() {
+    // Intentar ejecutar yylex() y verificar si ocurre un error
+    if (setjmp(jmpbuf) != 0) {
+        printf("\nError: Se ha producido un error de análisis.\n");
+        return 1;  // Retornar código de error
+    }
+    
+    // Llamada a yylex() para procesar el texto
+    yylex();
+
+    // Si no hubo error
+    if (!error_occurred) {
+        printf("\nAnálisis completado correctamente.\n");
+    }
+    
+    return 0;
+}
+
+---
+
 ## Codigo 12
 
 %{
