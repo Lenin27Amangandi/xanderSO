@@ -1,3 +1,31 @@
+## Codigo 20
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+%}
+
+%%
+
+// Definición de los tokens
+[a-zA-Z][a-zA-Z0-9]*    { printf("Identificador: %s\n", yytext); }  // Identificadores
+[0-9]+                  { printf("Número entero: %s\n", yytext); }    // Números enteros
+,                       { /* Coma, solo separa los elementos, no hace nada */ }
+.                       { printf("Error: Token no válido '%s'\n", yytext); } // Cualquier otro tipo de token
+
+%%
+
+int main() {
+    printf("Introduce una lista de elementos separados por comas (identificadores o números enteros):\n");
+    yylex();  // Ejecuta el analizador léxico
+    return 0;
+}
+
+
+
+
 ## Codigo 11
 
 %{
