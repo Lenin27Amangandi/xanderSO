@@ -3,41 +3,78 @@
 ## Ejericico 13
 
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+
+int error_occurred = 0;  // Variable para controlar si ocurrió un error
 %}
 
-IDENTIFICADOR [a-zA-Z_][a-zA-Z0-9_]*
-PALABRA_RESERVADA if|else|while|int
-ENTERO [0-9]+
-ERROR .+ // Para cualquier otro símbolo que no coincida
+DIGITO    [0-9]
+ID        [a-z][a-z0-9]*
 
 %%
 
-{PALABRA_RESERVADA} { 
-    printf("Token: PALABRA RESERVADA, Lexema: %s\n", yytext); 
+{DIGITO}+ {
+    printf("Un Entero: %s (%d)\n", yytext, atoi(yytext));
 }
 
-{IDENTIFICADOR} { 
-    printf("Token: IDENTIFICADOR, Lexema: %s\n", yytext); 
+{DIGITO}+"."{DIGITO}*  {
+    char *endptr;
+    double val = strtod(yytext, &endptr);
+    if (*endptr == '\0') {  // Verificar si la conversión fue exitosa
+        printf("Un Real: %s (%g)\n", yytext, val);
+    } else {
+        printf("Error: No se pudo convertir a un número real: %s\n", yytext);
+        error_occurred = 1;  // Marcar que hubo un error
+    }
 }
 
-{ENTERO} { 
-    printf("Token: ENTERO, Lexema: %s\n", yytext); 
+"if"|"then"|"begin"|"end"|"procedure"|"function"  {
+    printf("Palabra Clave: %s \n", yytext);
 }
 
-{ERROR} {
-    printf("Error: Token no reconocido, Lexema: %s\n", yytext);
+{ID}    {
+    printf("Un identificador: %s \n", yytext);
+}
+
+"+"|"-"|"*"|"/" {
+    printf("Un operador: %s\n", yytext);
+}
+
+"{"[^}\n]*"}"  // Se come una línea de comentarios
+[\t\n]+   // Se come espacios en blanco
+
+.        {
+    printf("Caracter no reconocido: %s\n", yytext);
+    error_occurred = 1;  // Marcar que hubo un error
 }
 
 %%
 
-int main() {
-    yylex(); // Ejecuta el análisis léxico
+int main(int argc, char **argv)
+{
+    ++argv, --argc; // Se salta el nombre del programa
+    if (argc > 0) {
+        yyin = fopen(argv[0], "r");
+        if (!yyin) {
+            perror("Error al abrir el archivo");
+            return 1;  // Terminar si el archivo no se puede abrir
+        }
+    } else {
+        yyin = stdin;  // Usar entrada estándar si no se proporciona un archivo
+    }
+
+    yylex();
+
+    if (error_occurred) {
+        printf("\nSe encontraron errores durante el análisis.\n");
+        return 1;
+    }
+
     return 0;
 }
-
 
 
 
