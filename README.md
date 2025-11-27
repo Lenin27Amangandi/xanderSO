@@ -1,5 +1,48 @@
 ## Codigo 16
 
+## Ejericico 13
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+%}
+
+IDENTIFICADOR [a-zA-Z_][a-zA-Z0-9_]*
+PALABRA_RESERVADA if|else|while|int
+ENTERO [0-9]+
+ERROR .+ // Para cualquier otro símbolo que no coincida
+
+%%
+
+{PALABRA_RESERVADA} { 
+    printf("Token: PALABRA RESERVADA, Lexema: %s\n", yytext); 
+}
+
+{IDENTIFICADOR} { 
+    printf("Token: IDENTIFICADOR, Lexema: %s\n", yytext); 
+}
+
+{ENTERO} { 
+    printf("Token: ENTERO, Lexema: %s\n", yytext); 
+}
+
+{ERROR} {
+    printf("Error: Token no reconocido, Lexema: %s\n", yytext);
+}
+
+%%
+
+int main() {
+    yylex(); // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+
+
+---
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
