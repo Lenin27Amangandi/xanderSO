@@ -1,5 +1,34 @@
 # Ejercicios Lex
 
+## Funciona sin dar el error
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+%}
+
+UPPER [A-Z]
+LOWER [a-z]
+DIGIT [0-9]
+OTHER [^A-Za-z0-9]  // Cualquier carácter que no sea una letra o número
+
+%%
+
+{UPPER}    { printf("%c", tolower(yytext[0])); }  // Convierte mayúsculas a minúsculas
+{LOWER}    { printf("%c", yytext[0]); }            // Deja las minúsculas tal cual
+{DIGIT}    { printf("%c", yytext[0]); }            // Deja los números tal cual
+{OTHER}    { printf("%c", yytext[0]); }            // Imprime cualquier otro carácter tal cual
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
 ## Talves funcione bien el 15 
 
 %{
