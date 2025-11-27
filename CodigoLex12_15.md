@@ -1,5 +1,34 @@
 # Ejercicios Lex
 
+## Ejercicio 14completo
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+%}
+
+OP_ARITMETICOS [\+\-\*\/]
+OP_RELACIONALES "<="|">="|"<"|"="|">"|"\<="|"\>="|"\!="|"\=="|"=>"
+
+%%
+
+{OP_ARITMETICOS}   { printf("Operador aritmético: %s\n", yytext); }
+{OP_RELACIONALES}  { printf("Operador relacional: %s\n", yytext); }
+
+.                   { printf("Error: Token no reconocido: %s\n", yytext); }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+
+---
+
 ## Ejercicio 12 Completo
 
 
