@@ -1,5 +1,36 @@
 # Ejercicios Lex
 
+## Ejercicio 15 completo
+
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+%}
+
+UPPER [A-Z]
+LOWER [a-z]
+OTHER .  // Cualquier otro carácter
+
+%%
+
+{UPPER}    { printf("%c", tolower(yytext[0])); }
+{LOWER}    { printf("%c", yytext[0]); }
+{OTHER}    { printf("%c", yytext[0]); }  // Imprime cualquier otro carácter tal cual
+
+.          { printf("Error: Token no reconocido: %s\n", yytext); }
+
+%%
+
+int main() {
+    yylex();  // Ejecuta el análisis léxico
+    return 0;
+}
+
+
+---
+
 ## Ejercicio 14completo
 
 %{
