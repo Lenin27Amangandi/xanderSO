@@ -11,15 +11,15 @@
 
 UPPER [A-Z]
 LOWER [a-z]
-OTHER .  // Cualquier otro carácter
+OTHER [^A-Za-z]  // Cualquier otro carácter que no sea letra
 
 %%
 
-{UPPER}    { printf("%c", tolower(yytext[0])); }
-{LOWER}    { printf("%c", yytext[0]); }
-{OTHER}    { printf("%c", yytext[0]); }  // Imprime cualquier otro carácter tal cual
+{UPPER}    { printf("%c", tolower(yytext[0])); }  // Convierte mayúsculas a minúsculas
+{LOWER}    { printf("%c", yytext[0]); }            // Deja las minúsculas tal cual
+{OTHER}    { printf("%c", yytext[0]); }            // Imprime cualquier otro carácter tal cual
 
-.          { printf("Error: Token no reconocido: %s\n", yytext); }
+.          { printf("Error: Token no reconocido: %s\n", yytext); }  // Error para otros casos
 
 %%
 
