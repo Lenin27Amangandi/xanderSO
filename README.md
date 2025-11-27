@@ -1,3 +1,35 @@
+## Codigo 12
+
+%{
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+
+char c;  // Variable que no se está utilizando
+%}
+
+%%
+
+[A-Z]    { printf("%c", tolower(yytext[0])); }   // Convierte mayúsculas a minúsculas
+[a-z]    { printf("%c", toupper(yytext[0])); }   // Convierte minúsculas a mayúsculas
+[^A-Za-z\t] { printf("%c", yytext[0]); }         // Si no es una letra, imprímelo tal cual
+
+%%
+
+int main() {
+    // Manejo de errores al llamar a yylex()
+    if (yylex() == 0) {
+        printf("\nFin de archivo alcanzado sin errores.\n");
+    } else {
+        printf("\nSe produjo un error al procesar el texto.\n");
+    }
+    return 0;
+}
+
+
+---
+
 ## Codigo 11
 %{
     int num_el = 0, num_ella = 0;
